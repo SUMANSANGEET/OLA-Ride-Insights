@@ -26,8 +26,8 @@ import streamlit.components.v1 as components
 # --------------------------------------------------------------------------- #
 # Configuration
 # --------------------------------------------------------------------------- #
-BASE = Path(__file__).parent
-DB_PATH = BASE / "data" / "ola_rides.db"
+BASE = Path(__file__).resolve().parent
+DB_PATH = BASE / "outputs" / "ola_rides.db"
 ASSETS = BASE / "assets"
 
 WEEKDAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
@@ -110,7 +110,18 @@ st.markdown(
 @st.cache_resource(show_spinner=False)
 def get_connection() -> sqlite3.Connection:
     """Read-only connection so user-supplied SQL can never modify the data."""
-    return sqlite3.connect(f"file:{DB_PATH}?mode=ro", uri=True, check_same_thread=False)
+
+    if not DB_PATH.is_file():
+        raise FileNotFoundError(
+            f"Database not found: {DB_PATH}. "
+            "Ensure outputs/ola_rides.db is committed to GitHub."
+        )
+
+    return sqlite3.connect(
+        f"{DB_PATH.resolve().as_uri()}?mode=ro",
+        uri=True,
+        check_same_thread=False
+    )
 
 
 @st.cache_data(show_spinner=False)
