@@ -53,17 +53,17 @@ flowchart LR
 ## 🔍 Key Insights
 
 ### 1. Demand is steady; the leak is structural
-<img src="assets/charts/01_daily_trend.png" width="780"/>
+<img src="assets/01_daily_trend.png" width="780"/>
 
 Bookings hold near **3,300/day** (range 3,072 to 3,432). Completed rides track bookings at a constant ~62%. Weekday vs weekend looks lopsided in raw counts (76,670 vs 26,354) only because July 2024 has 23 weekdays and 8 weekend days; per day they are near-identical (~3,333 vs ~3,294).
 
-<img src="assets/charts/03_hourly_demand.png" width="780"/>
+<img src="assets/03_hourly_demand.png" width="780"/>
 
 Success rate stays within **60.4–63.6% across all 24 hours**. No rush-hour fix is needed; consistency is.
 
 ### 2. Four in ten bookings fail
 <table><tr>
-<td><img src="assets/charts/02_booking_status.png" width="330"/></td>
+<td><img src="assets/02_booking_status.png" width="330"/></td>
 <td>
 
 | Outcome | Rides | Share |
@@ -75,7 +75,7 @@ Success rate stays within **60.4–63.6% across all 24 hours**. No rush-hour fix
 
 </td></tr></table>
 
-<img src="assets/charts/07_cancellation_reasons.png" width="780"/>
+<img src="assets/07_cancellation_reasons.png" width="780"/>
 
 Drivers cause **63.7%** of cancellations. The top reason, *"Personal & Car related issue"* (6,542), is largely preventable with vehicle-health checks and better onboarding. Many customer cancels are also driver-caused: *"Driver is not moving towards pickup"* (3,175) and *"Driver asked to cancel"* (2,670).
 
@@ -83,19 +83,19 @@ Drivers cause **63.7%** of cancellations. The top reason, *"Personal & Car relat
 
 ### 3. Where the money goes
 <table><tr>
-<td><img src="assets/charts/05_revenue_bridge.png" width="380"/></td>
-<td><img src="assets/charts/06_payment_mix.png" width="380"/></td>
+<td><img src="assets/05_revenue_bridge.png" width="380"/></td>
+<td><img src="assets/06_payment_mix.png" width="380"/></td>
 </tr></table>
 
 **Cash is 54.9%** of revenue, UPI 40.4%, cards under 5%. Fares are almost identical across payment methods (₹539–550), so payment mix is a behaviour lever, not a quality issue.
 
 ### 4. Auto is the pricing outlier
-<img src="assets/charts/04_vehicle_distance_revenue_km.png" width="780"/>
+<img src="assets/04_vehicle_distance_revenue_km.png" width="780"/>
 
 All 7 vehicle types get ~14.6K–14.9K bookings with 61.4–63.0% success. **Autos travel 10 km vs ~25 km** yet earn the same ~₹551 fare, so revenue per km is **₹54.9 vs ₹21.7–22.3 (2.5x)**. Across all rides, fare and distance are uncorrelated (r = 0.002), which warrants a pricing review.
 
 ### 5. Customers don't come back, and ratings are uniform
-<img src="assets/charts/09_ratings.png" width="780"/>
+<img src="assets/09_ratings.png" width="780"/>
 
 **91.6% of 94,544 customers rode only once.** Both rating sides average 4.00 and are uncorrelated (r ≈ 0), so ratings add little signal for ranking drivers; use cancellation and acceptance behaviour instead. **3,926 completed rides (6.1%)** ended incomplete: Customer Demand 41%, Vehicle Breakdown 41%, Other 19%.
 
@@ -117,27 +117,27 @@ Interactive slicers (date, vehicle, payment, pickup, status, day part), KPI card
 
 <details open>
 <summary><b>1 · Overall Dashboard</b></summary>
-<img src="assets/dashboard/1_overall.png" width="820"/>
+<img src="assets/1_overall.png" width="820"/>
 </details>
 
 <details>
 <summary><b>2 · Vehicle Type Analysis</b></summary>
-<img src="assets/dashboard/2_vehicle_type.png" width="820"/>
+<img src="assets/2_vehicle_type.png" width="820"/>
 </details>
 
 <details>
 <summary><b>3 · Revenue & Customer Value</b></summary>
-<img src="assets/dashboard/3_revenue.png" width="820"/>
+<img src="assets/3_revenue.png" width="820"/>
 </details>
 
 <details>
 <summary><b>4 · Cancellation & Operations</b></summary>
-<img src="assets/dashboard/4_cancellation.png" width="820"/>
+<img src="assets/4_cancellation.png" width="820"/>
 </details>
 
 <details>
 <summary><b>5 · Ratings Analysis</b></summary>
-<img src="assets/dashboard/5_ratings.png" width="820"/>
+<img src="assets/5_ratings.png" width="820"/>
 </details>
 
 ## 🌐 Streamlit App
