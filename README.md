@@ -253,7 +253,7 @@ Demand forecasting · geospatial pickup/drop analysis · driver segmentation · 
 
 Data Analytics · Business Intelligence · SQL · Python · Power BI
 
-[GitHub](https://github.com/YOUR_GITHUB_USERNAME) · [LinkedIn](https://www.linkedin.com/in/YOUR_LINKEDIN)
+[GitHub](https://github.com/SUMANSANGEET) · [LinkedIn](https://www.linkedin.com/in/p-suman-sangeet)
 
 ---
 <div align="center"><b>Turning data into insights. Turning insights into decisions.</b> ⭐ Star the repo if you found it useful.</div>
