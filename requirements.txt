@@ -1,0 +1,14 @@
+streamlit>=1.50
+pandas>=2.0
+plotly>=5.20
+pandas
+numpy
+matplotlib
+seaborn
+plotly
+streamlit
+sqlalchemy
+pymysql
+scikit-learn
+openpyxl
+jupyter

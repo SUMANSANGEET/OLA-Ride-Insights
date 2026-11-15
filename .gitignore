@@ -1,0 +1,42 @@
+__pycache__/
+*.pyc
+.streamlit/secrets.toml
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Secrets and credentials
+.env
+.env.*
+!.env.example
+.streamlit/secrets.toml
+*.pem
+*.key
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Temporary files
+*.log
+*.tmp
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Generated files
+.pytest_cache/
+.mypy_cache/

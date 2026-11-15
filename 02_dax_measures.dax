@@ -1,0 +1,111 @@
+// =====================================================================
+// OLA RIDE INSIGHTS - DAX  (Modeling > New table / New measure)
+// Create an empty table first:  _Measures = ROW("x", 1)   then add measures to it.
+// =====================================================================
+
+// ---------- Calculated tables (Modeling > New table) ----------
+Dim_Date =
+ADDCOLUMNS(
+    CALENDAR(MIN(Fact_Rides[Booking_Date]), MAX(Fact_Rides[Booking_Date])),
+    "Day", DAY([Date]),
+    "Weekday", FORMAT([Date], "ddd"),
+    "Weekday No", WEEKDAY([Date], 2),
+    "Day Type", IF(WEEKDAY([Date], 2) > 5, "Weekend", "Weekday")
+)
+
+Dim_Vehicle =
+DISTINCT(SELECTCOLUMNS(Fact_Rides, "Vehicle_Type", Fact_Rides[Vehicle_Type]))
+
+// ---------- Volume & status ----------
+Total Bookings = COUNTROWS(Fact_Rides)
+
+Successful Rides =
+CALCULATE([Total Bookings], Fact_Rides[Booking_Status] = "Success")
+
+Cancelled by Customer =
+CALCULATE([Total Bookings], Fact_Rides[Booking_Status] = "Canceled by Customer")
+
+Cancelled by Driver =
+CALCULATE([Total Bookings], Fact_Rides[Booking_Status] = "Canceled by Driver")
+
+Driver Not Found =
+CALCULATE([Total Bookings], Fact_Rides[Booking_Status] = "Driver Not Found")
+
+Total Cancelled = [Cancelled by Customer] + [Cancelled by Driver]
+
+Success Rate % = DIVIDE([Successful Rides], [Total Bookings])
+
+Cancellation Rate % = DIVIDE([Total Cancelled], [Total Bookings])
+
+Incomplete Rides =
+CALCULATE([Total Bookings], Fact_Rides[Incomplete_Rides] = "Yes")
+
+Incomplete Rate % = DIVIDE([Incomplete Rides], [Successful Rides])
+
+// ---------- Revenue ----------
+Total Revenue =
+CALCULATE(SUM(Fact_Rides[Booking_Value]), Fact_Rides[Booking_Status] = "Success")
+
+Revenue Lost =
+CALCULATE(SUM(Fact_Rides[Booking_Value]), Fact_Rides[Booking_Status] <> "Success")
+
+Avg Booking Value = DIVIDE([Total Revenue], [Successful Rides])
+
+Revenue Share % =
+DIVIDE([Total Revenue], CALCULATE([Total Revenue], ALLSELECTED(Fact_Rides)))
+
+Cumulative Revenue =
+CALCULATE(
+    [Total Revenue],
+    FILTER(ALLSELECTED(Dim_Date[Date]), Dim_Date[Date] <= MAX(Dim_Date[Date]))
+)
+
+// ---------- Distance ----------
+Total Distance (km) =
+CALCULATE(SUM(Fact_Rides[Ride_Distance]), Fact_Rides[Booking_Status] = "Success")
+
+Avg Distance (km) =
+CALCULATE(AVERAGE(Fact_Rides[Ride_Distance]), Fact_Rides[Booking_Status] = "Success")
+
+Revenue per Km = DIVIDE([Total Revenue], [Total Distance (km)])
+
+// ---------- Ratings (null for cancelled rides, so AVERAGE is already correct) ----------
+Avg Customer Rating = AVERAGE(Fact_Rides[Customer_Rating])
+
+Avg Driver Rating = AVERAGE(Fact_Rides[Driver_Ratings])
+
+Rating Gap (Cust - Driver) = [Avg Customer Rating] - [Avg Driver Rating]
+
+Rated Rides = COUNT(Fact_Rides[Customer_Rating])
+
+// ---------- Trend helpers ----------
+Bookings 7D Avg =
+AVERAGEX(
+    DATESINPERIOD(Dim_Date[Date], MAX(Dim_Date[Date]), -7, DAY),
+    [Total Bookings]
+)
+
+Bookings vs Prev Day % =
+VAR _cur  = [Total Bookings]
+VAR _prev = CALCULATE([Total Bookings], DATEADD(Dim_Date[Date], -1, DAY))
+RETURN DIVIDE(_cur - _prev, _prev)
+
+// ---------- Ranking (use for Top-N cards / conditional formatting) ----------
+Vehicle Distance Rank =
+RANKX(ALL(Fact_Rides[Vehicle_Type]), [Total Distance (km)], , DESC, DENSE)
+
+Customer Value Rank =
+RANKX(ALL(Fact_Rides[Customer_ID]), [Total Revenue], , DESC, DENSE)
+
+// ---------- Dynamic titles / KPI text ----------
+Title - Bookings =
+"Ride volume - " & FORMAT([Total Bookings], "#,0") & " bookings, " &
+FORMAT([Success Rate %], "0.0%") & " completed"
+
+Insight - Top Cancel Reason =
+VAR t =
+    TOPN(1,
+        SUMMARIZE(FILTER(Fact_Rides, Fact_Rides[Cancel_Reason] <> BLANK()),
+                  Fact_Rides[Cancel_Reason], "n", COUNTROWS(Fact_Rides)),
+        [n], DESC)
+RETURN "Top cancellation reason: " & MAXX(t, Fact_Rides[Cancel_Reason])
